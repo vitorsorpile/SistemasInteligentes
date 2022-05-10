@@ -1,6 +1,7 @@
-from MazeSolver import MazeSolver
-
 import argparse
+from MazeSolver import MazeSolver
+from BFS import BFS
+from functions import read_txt
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-file', type=str)
@@ -12,27 +13,16 @@ fileName = args.file
 if fileName == None:
    fileName = 'labirintos/lab00.txt'
 
-matrix = [[]]
-i = 0
-try:
-   with open(fileName, 'r') as file:
-      for line in file:
-         matrix.append([])
-         line = line.strip('\n')
-         line = line.replace(' ', '')
-         print(line)
-         for number in line:
-            matrix[i].append(int(number))
-         i += 1
-
-   print(matrix)
-
-except Exception as e:
-   print(e)
+matrix = read_txt(fileName)
 
 
-maze_solver = MazeSolver(matrix)
-maze_solver.solve(1, maze_solver.root)
+
+#maze_solver = MazeSolver(matrix)
+#maze_solver.solve(maze_solver.root)
+#print(maze_solver.tree)
+
+maze_solver = BFS(matrix)
+maze_solver.solve()
 
 # raiz -> checa se é a saida
 # ve os possiveis passos

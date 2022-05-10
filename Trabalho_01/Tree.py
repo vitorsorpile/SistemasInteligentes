@@ -1,10 +1,4 @@
 
-from re import X
-
-from matplotlib.pyplot import xscale
-from sympy import false
-
-
 class Node():
    def __init__(self, value, root, x, y):
       self.leaves = []
@@ -24,33 +18,23 @@ class Node():
       return False
 
    def __str__(self):
-      return f'({self.x}, {self.y}) -> {self.value}'
+      # Logica de x e y na matriz eh invertida com o plano cartesiano
+      return f'({self.y}, {self.x}) -> {self.value}'
    
    def addLeaf(self, value, x, y):
       self.leaves.append(Node(value, self, x, y))
 
-
-  # def computeLeaves(self):
-  #    value = self.matrix[self.x + 1][self.y]
-   #   if value != 0:
-    #     self.addLeaf(value, self.x + 1, self.y)
-#
- #     value = self.matrix[self.x - 1][self.y]
-  #    if value != 0:
-   #      self.addLeaf(value, self.x - 1, self.y)
-#
- #     value = self.matrix[self.x][self.y + 1]
-  #    if value != 0:
-   #      self.addLeaf(value, self.x, self.y + 1)
-#
- #     value = self.matrix[self.x][self.y - 1]
-  #    if value != 0:
-   #      self.addLeaf(value, self.x, self.y - 1)
+   def printTree(self, level = 0):
+      ret = ' '*2*level + str(self) + '\n'
+      for leaf in self.leaves:
+         ret += leaf.printTree(level + 1)
+      return ret
 
       
 class Tree():
-   def __init__(self):
-      self.root = None
+   def __init__(self, root = None):
+      self.root = root
 
-   def insertNode(self):
-      newNode = Node()
+   def __str__(self):
+     return  self.root.printTree()
+      
