@@ -1,6 +1,4 @@
-import random
-from Tree import Tree, Node
-import copy
+from Tree import Node
 
 START_VALUE = 2
 EXIT_VALUE = 3
@@ -11,9 +9,6 @@ class MazeSolver():
    def __init__(self, maze):
       self.maze = maze
       self.actualPos = (1,1)
-
-      self.root = Node(2, None, 1, 1)
-      self.tree = Tree(self.root)
       
    def calculatePossibleSteps(self, node):
       if node == None:
@@ -53,46 +48,12 @@ class MazeSolver():
 
    def isExit(self, node):
       if node.value == EXIT_VALUE:
+         print(f'Exit is at ({node.x},{node.y})')
          return True 
       else:
          return False
 
    
    def solve(self, node):
-      if node == None:
-         return
-
-      print(node)
-      self.actualPos = (node.x, node.y)
-
-      print(self.actualPos)
-      
-      if self.isExit(node):
-         return True
-
-      steps = self.calculatePossibleSteps(node)
-      
-      for step in steps:
-         step.root = node
-         node.leaves.append(step)
-      #for leaf in node.leaves:
-      #   print(leaf, end=', ')
-      
-      #print('')
-      #aux = copy.copy(node.leaves)
-      aux = list(range(len(node.leaves)))
-
-      random.shuffle(aux)      
-
-      for index in aux:
-         ret = self.solve(node.leaves[index])
-         if (ret == None):
-            continue
-         return ret
-
-#      for leaf in node.leaves:
- #        ret = self.solve(leaf)
-  #       if (ret == None):
-   #         continue
-    #     return ret
+      raise NotImplementedError()
 

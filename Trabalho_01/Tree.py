@@ -6,7 +6,6 @@ class Node():
       self.root = root
       self.x = x
       self.y = y
-      # self.matrix = matrix
    
    def __eq__(self, o):
       if o == None:
@@ -18,8 +17,7 @@ class Node():
       return False
 
    def __str__(self):
-      # Logica de x e y na matriz eh invertida com o plano cartesiano
-      return f'({self.y}, {self.x}) -> {self.value}'
+      return f'({self.x}, {self.y}) -> {self.value}'
    
    def addLeaf(self, value, x, y):
       self.leaves.append(Node(value, self, x, y))

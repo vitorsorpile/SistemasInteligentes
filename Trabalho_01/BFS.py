@@ -12,7 +12,7 @@ class BFS(MazeSolver):
       i = 0
       while(not self.isExit(self.list[i])):
          self.actualPos = (self.list[i].x, self.list[i].y)
-         print(self.list[i])
+         # print(self.list[i])
 
          steps = self.calculatePossibleSteps(self.list[i])
 
@@ -21,4 +21,4 @@ class BFS(MazeSolver):
                self.list.append(step)
          i += 1
    
-      print(self.list[i])
+      # print(self.list[i])
