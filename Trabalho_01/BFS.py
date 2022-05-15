@@ -11,7 +11,8 @@ class BFS(MazeSolver):
    def solve(self):
       i = 0
       while(not self.isExit(self.list[i])):
-         self.actualPos = (self.list[i].x, self.list[i].y)
+         self.updateActualPos(self.list[i].x, self.list[i].y)
+         # self.actualPos = (self.list[i].x, self.list[i].y)
          # print(self.list[i])
 
          steps = self.calculatePossibleSteps(self.list[i])

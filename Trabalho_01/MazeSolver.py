@@ -22,22 +22,22 @@ class MazeSolver():
 
       value = self.maze[node.x + 1][node.y]
       if value != 0:
-         possibleSteps.append(Node(value, None, node.x + 1, node.y))
+         possibleSteps.append(Node(value, node, node.x + 1, node.y))
          # node.addLeaf(value, node.x + 1, node.y)
 
       value = self.maze[node.x - 1][node.y]
       if value != 0:
-         possibleSteps.append(Node(value, None, node.x - 1, node.y))
+         possibleSteps.append(Node(value, node, node.x - 1, node.y))
          # node.addLeaf(value, node.x - 1, node.y)
 
       value = self.maze[node.x][node.y + 1]
       if value != 0:
-         possibleSteps.append(Node(value, None, node.x, node.y + 1))
+         possibleSteps.append(Node(value, node, node.x, node.y + 1))
          # node.addLeaf(value, node.x, node.y + 1)
 
       value = self.maze[node.x][node.y - 1]
       if value != 0:
-         possibleSteps.append(Node(value, None, node.x, node.y - 1))
+         possibleSteps.append(Node(value, node, node.x, node.y - 1))
          # node.addLeaf(value, node.x, node.y - 1)
 
       if node.root != None:
@@ -53,7 +53,19 @@ class MazeSolver():
       else:
          return False
 
+   def updateActualPos(self, x, y):
+      self.maze[self.actualPos[0]][self.actualPos[1]] = 1
+      self.actualPos = (x, y)
+      self.maze[x][y] = 4
+      self.printMaze()
    
+   def printMaze(self):
+      for row in self.maze:
+         for item in row:
+            print(item, end=' ')
+         
+         print()
+
    def solve(self, node):
       raise NotImplementedError()
 

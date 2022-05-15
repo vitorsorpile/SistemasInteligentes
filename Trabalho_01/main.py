@@ -17,12 +17,9 @@ matrix = read_txt(fileName)
 
 
 
-#maze_solver = MazeSolver(matrix)
-#maze_solver.solve(maze_solver.root)
-#print(maze_solver.tree)
 
-maze_solver = BFS(matrix)
-maze_solver.solve()
+# maze_solver = BFS(matrix)
+# maze_solver.solve()
 
 maze_solver = DFS(matrix)
 maze_solver.solve(maze_solver.root)

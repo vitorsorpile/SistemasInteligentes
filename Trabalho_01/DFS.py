@@ -15,7 +15,8 @@ class DFS(MazeSolver):
          return
 
       print(node)
-      self.actualPos = (node.x, node.y)
+      self.updateActualPos(node.x, node.y)
+      # self.actualPos = (node.x, node.y)
 
       # print(self.actualPos)
       
