@@ -10,7 +10,7 @@ class DFS(MazeSolver):
       self.root = Node(2, None, 1, 1)
       self.tree = Tree(self.root)
 
-   def solve(self, node):
+   def solve(self, node, step = 0):
       if node == None:
          return
 
@@ -42,6 +42,7 @@ class DFS(MazeSolver):
          if (ret == None):
             continue
          return ret
+
 
 #      for leaf in node.leaves:
  #        ret = self.solve(leaf)

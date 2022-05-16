@@ -57,7 +57,7 @@ class MazeSolver():
       self.maze[self.actualPos[0]][self.actualPos[1]] = 1
       self.actualPos = (x, y)
       self.maze[x][y] = 4
-      self.printMaze()
+      #self.printMaze()
    
    def printMaze(self):
       for row in self.maze:
