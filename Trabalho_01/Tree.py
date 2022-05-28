@@ -1,3 +1,6 @@
+import pygame
+from time import sleep
+
 
 class Node():
    def __init__(self, value, root, x, y):

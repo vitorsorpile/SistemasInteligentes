@@ -1,4 +1,6 @@
+from time import sleep
 from Tree import Node
+import pygame
 
 START_VALUE = 2
 EXIT_VALUE = 3
@@ -6,9 +8,10 @@ DFS = 1
 BFS = 2
 
 class MazeSolver():
-   def __init__(self, maze):
+   def __init__(self, maze, screen):
       self.maze = maze
       self.actualPos = (1,1)
+      self.screen = screen
       
    def calculatePossibleSteps(self, node):
       if node == None:

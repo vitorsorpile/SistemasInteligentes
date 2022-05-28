@@ -1,3 +1,5 @@
+import pygame
+
 def read_txt(fileName: str):
    matrix = [[]]
    matrix.append([])
@@ -32,3 +34,22 @@ def read_txt(fileName: str):
 
    except Exception as e:
       print(e)
+
+def createSquare(x,y,color,gridDisplay):
+   pygame.draw.rect(gridDisplay,color,[x,y,35,35])
+
+def visualizeMatrix(mazematrix,gridDisplay):
+   y = 0
+   for row in mazematrix:
+      x = 0
+      for item in row:
+         if item == 0:
+            createSquare(x,y,(255,255,255),gridDisplay)
+         if item == 1 or item == 2:
+            createSquare(x,y,(0,0,0),gridDisplay)
+         if item == 3:
+            createSquare(x,y,(255,0,0),gridDisplay)
+         if item == 4:
+            createSquare(x,y,(0,255,0),gridDisplay)
+         x += 35
+      y += 35

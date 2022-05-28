@@ -1,11 +1,13 @@
 from MazeSolver import MazeSolver
 from Tree import Node, Tree
 import random
-
+import pygame
+import functions
+import time
 
 class DFS(MazeSolver):
-   def __init__(self, maze):
-      super().__init__(maze)
+   def __init__(self, maze, screen):
+      super().__init__(maze, screen)
 
       self.root = Node(2, None, 1, 1)
       self.tree = Tree(self.root)
@@ -16,6 +18,9 @@ class DFS(MazeSolver):
 
       print(node)
       self.updateActualPos(node.x, node.y)
+      functions.visualizeMatrix(self.maze,self.screen)
+      pygame.display.update()
+      time.sleep(0.5)
       # self.actualPos = (node.x, node.y)
 
       # print(self.actualPos)
