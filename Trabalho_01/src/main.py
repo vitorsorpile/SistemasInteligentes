@@ -2,9 +2,7 @@ import argparse
 from time import sleep
 from BFS import BFS
 from DFS import DFS
-from functions import read_txt, visualizeMatrix
-from operator import truediv
-from pickle import TRUE
+from functions import read_txt
 import pygame
 from sys import exit
 import tkinter as tk
@@ -41,20 +39,19 @@ dfs_button = interface.Button(30,160,dfs_img,0.25,screen1)
 bfs_button = interface.Button(208,160,bfs_img,0.25,screen1)
 select_maze_button = interface.Button(37,235,select_maze_img,0.5,screen1)
 
-while TRUE:
+while True:
    screen1.fill((255,255,255))
    logo.draw()
    creditos.draw()
 
    if select_maze_button.draw():
       fileName = filedialog.askopenfilename()
-   
-   if fileName == None:
-      fileName = 'labirintos/lab00.txt'
-
-   matrix = read_txt(fileName)
 
    if dfs_button.draw():
+      if fileName == None:
+         fileName = 'labirintos/lab00.txt'
+
+      matrix = read_txt(fileName)
       maze_solver_dfs = DFS(matrix,screen1)
       maze_solver_dfs.solve(maze_solver_dfs.root)
       screen1.fill((255,255,255))
@@ -65,6 +62,10 @@ while TRUE:
       #exit()
 
    if bfs_button.draw():
+      if fileName == None:
+         fileName = 'labirintos/lab00.txt'
+
+      matrix = read_txt(fileName)
       maze_solver_bfs = BFS(matrix, screen1)
       maze_solver_bfs.solve()
       screen1.fill((255,255,255))

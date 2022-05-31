@@ -24,8 +24,10 @@ class BFS(MazeSolver):
             for step in steps:
                self.list.append(step)
          i += 1
+
       self.updateActualPos(self.list[i].x, self.list[i].y)
       visualizeMatrix(self.maze,self.screen)
       pygame.display.update()
+      sleep(0.5)
       print(self.list[i])
       print(f'BFS solved the maze in {i} steps.')

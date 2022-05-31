@@ -2,14 +2,14 @@ import pygame
 
 def read_txt(fileName: str):
    matrix = [[]]
-   matrix.append([])
    # insert top barrier
-   for _ in range(12):
-      matrix[0].append(0)
-   i = 1
+   n = 0
+   i = 0
    try:
       with open(fileName, 'r') as file:
+         
          for line in file:
+            print(line)
             matrix.append([])
             # insert left side barrier
             matrix[i].append(0)
@@ -23,12 +23,20 @@ def read_txt(fileName: str):
             # insert right side barrier 
             matrix[i].append(0)
 
+            #print(matrix[i])
             i += 1
-      # insert bottom barrier
-      for _ in range(12):
-         matrix[i].append(0)
+      n = len(matrix[0])
+      #insert top and bottom barrier
+      matrix.insert(0, [])
 
-      # print(matrix)
+      for _ in range(n):
+         matrix[0].append(0)
+         matrix[n-1].append(0)
+
+      print('------------------')
+      for line in matrix:
+         print(line)
+      print('-------------------')
       return matrix
       
 
