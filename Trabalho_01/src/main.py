@@ -48,11 +48,12 @@ while True:
       fileName = filedialog.askopenfilename()
 
    if dfs_button.draw():
-      if fileName == None:
+      if not fileName:
          fileName = 'labirintos/lab00.txt'
 
       matrix = read_txt(fileName)
       maze_solver_dfs = DFS(matrix,screen1)
+      screen1.fill((255,255,255))
       maze_solver_dfs.solve(maze_solver_dfs.root)
       screen1.fill((255,255,255))
       end.draw()
@@ -62,11 +63,12 @@ while True:
       #exit()
 
    if bfs_button.draw():
-      if fileName == None:
+      if not fileName:
          fileName = 'labirintos/lab00.txt'
 
       matrix = read_txt(fileName)
       maze_solver_bfs = BFS(matrix, screen1)
+      screen1.fill((255,255,255))
       maze_solver_bfs.solve()
       screen1.fill((255,255,255))
       end.draw()
