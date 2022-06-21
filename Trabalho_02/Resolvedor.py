@@ -11,6 +11,7 @@ INITIAL_STATE = 'INITIAL_STATE'
 CALCULATE_STATE = 'CALCULATE_STATE'
 ANSWER_STATE = 'ANSWER_STATE'
 SOLVE_FIRST_GRADE_STATE = 'SOLVE_FIRST_GRADE_STATE'
+SOLVE_BY_BISECTION_STATE = 'SOLVE_BY_BISECTION_STATE'
 
 class Resolvedor(Agent):
 
@@ -47,6 +48,9 @@ class Resolvedor(Agent):
 
          if (res.body == '1grau'):
             self.set_next_state(SOLVE_FIRST_GRADE_STATE)
+
+         if (res.body == '2grau' or res.body == '3grau'):
+            self.set_next_state(SOLVE_BY_BISECTION_STATE)
          
          else:
             self.set_next_state(CALCULATE_STATE)
@@ -80,6 +84,11 @@ class Resolvedor(Agent):
             self.agent.coeficientes.append(int(res.body))
             self.set_next_state(SOLVE_FIRST_GRADE_STATE)
 
+         if self.agent.tipoDaFuncao == '2grau' or self.agent.tipoDaFuncao == '3grau':
+            if (int(res.body) > 0): self.agent.upper = int(res.body)
+            else: self.agent.lower = int(res.body)
+            self.set_next_state(SOLVE_BY_BISECTION_STATE)
+
 
    class SolveFirstGradeEquationState(State):
       async def run(self):
@@ -109,6 +118,12 @@ class Resolvedor(Agent):
          self.agent.msg.body = str(x)
          self.set_next_state(ANSWER_STATE)
 
+   class SolveByBisection(State):
+      async def run(self):
+         m = (self.agent.upper + self.agent.lower)/2
+         estimate = int(m)
+         self.agent.msg.body = str(estimate)
+         self.set_next_state(ANSWER_STATE)
 
    class CalculateState(State):
       async def run(self):
@@ -129,6 +144,8 @@ class Resolvedor(Agent):
 
    async def setup(self):
       self.coeficientes = []
+      self.upper = 1000
+      self.lower = -1000
 
       self.msg = Message(to=email_gerador)
       self.msg.set_metadata('performative', 'subscribe')
@@ -136,11 +153,14 @@ class Resolvedor(Agent):
       stateMachine = FSMBehaviour()
       stateMachine.add_state(name=INITIAL_STATE, state=self.InitialState(), initial=True)
       stateMachine.add_state(name=SOLVE_FIRST_GRADE_STATE, state=self.SolveFirstGradeEquationState())
+      stateMachine.add_state(name=SOLVE_BY_BISECTION_STATE, state=self.SolveByBisection())
       stateMachine.add_state(name=CALCULATE_STATE, state=self.CalculateState())
       stateMachine.add_state(name=ANSWER_STATE, state=self.AnswerState())
       stateMachine.add_transition(source=INITIAL_STATE, dest=SOLVE_FIRST_GRADE_STATE)
+      stateMachine.add_transition(source=INITIAL_STATE, dest=SOLVE_BY_BISECTION_STATE)
       stateMachine.add_transition(source=INITIAL_STATE, dest=CALCULATE_STATE)
       stateMachine.add_transition(source=SOLVE_FIRST_GRADE_STATE, dest=ANSWER_STATE)
+      stateMachine.add_transition(source=SOLVE_BY_BISECTION_STATE, dest=ANSWER_STATE)
       stateMachine.add_transition(source=ANSWER_STATE, dest=SOLVE_FIRST_GRADE_STATE)
 
       t = Template()
