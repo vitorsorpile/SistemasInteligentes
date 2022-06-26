@@ -6,7 +6,7 @@ from spade.message import Message
 from math import prod
 import random
 
-from main import email_gerador, senha_gerador
+from keys import email_gerador, senha_gerador
 
 class Gerador(Agent):
    
@@ -86,8 +86,6 @@ class Gerador(Agent):
       t.set_metadata("performative","subscribe")
 
       tf = self.responderValor()
-      # print("Funcao de 1o grau: ", Gerador.x)
-      # print("Funcao: ", Gerador.a, "x + (", Gerador.y, ")")
 
       self.add_behaviour(tf,t)
 
