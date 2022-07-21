@@ -4,6 +4,7 @@ from spade.template import Template
 from spade.message import Message
 import random
 import time
+import numpy
 
 from main import email_resolvedor, senha_resolvedor, email_gerador
 
@@ -84,10 +85,17 @@ class Resolvedor(Agent):
             self.agent.coeficientes.append(int(res.body))
             self.set_next_state(SOLVE_FIRST_GRADE_STATE)
 
-         if self.agent.tipoDaFuncao == '2grau' or self.agent.tipoDaFuncao == '3grau':
-            if (int(res.body) > 0): self.agent.upper = int(res.body)
-            else: self.agent.lower = int(res.body)
-            self.set_next_state(SOLVE_BY_BISECTION_STATE)
+         if (self.agent.tipoDaFuncao == '2grau' or self.agent.tipoDaFuncao == '3grau'):
+            if (self.agent.ableToUseBisection == 0): 
+               self.agent.fminmax[0] = int(res.body)
+               self.set_next_state(SOLVE_BY_BISECTION_STATE)
+            if (self.agent.ableToUseBisection == 1):
+               self.agent.fminmax[1] = int(res.body)
+               self.set_next_state(SOLVE_BY_BISECTION_STATE)
+            if (self.agent.ableToUseBisection == 2):
+               if (int(res.body) > 0): self.agent.upper = (self.agent.upper+self.agent.lower)/2
+               else: self.agent.lower = (self.agent.upper+self.agent.lower)/2
+               self.set_next_state(SOLVE_BY_BISECTION_STATE)
 
 
    class SolveFirstGradeEquationState(State):
@@ -120,10 +128,29 @@ class Resolvedor(Agent):
 
    class SolveByBisection(State):
       async def run(self):
-         m = (self.agent.upper + self.agent.lower)/2
-         estimate = int(m)
-         self.agent.msg.body = str(estimate)
-         self.set_next_state(ANSWER_STATE)
+         if(numpy.sign(self.agent.fminmax[0]) == numpy.sign(self.agent.fminmax[1])):
+            if(self.agent.fminmax[0] > self.agent.fminmax[1]):
+               self.agent.lower += 10
+               self.agent.iter -= 1
+            if(self.agent.fminmax[0] <= self.agent.fminmax[1]):
+               self.agent.upper -= 10
+               self.agent.iter -= 1
+
+         if self.agent.ableToUseBisection == 0:
+            self.agent.msg.body = str(self.agent.lower)
+            self.set_next_state(ANSWER_STATE)
+            self.agent.ableToUseBisection += 1
+
+         if self.agent.ableToUseBisection == 1:
+            self.agent.msg.body = str(self.agent.upper)
+            self.set_next_state(ANSWER_STATE)
+            self.agent.iters += 1
+         
+         else:
+            m = (self.agent.upper + self.agent.lower)/2
+            estimate = int(m)
+            self.agent.msg.body = str(estimate)
+            self.set_next_state(ANSWER_STATE)
 
    class CalculateState(State):
       async def run(self):
@@ -146,6 +173,8 @@ class Resolvedor(Agent):
       self.coeficientes = []
       self.upper = 1000
       self.lower = -1000
+      self.ableToUseBisection = 0
+      self.fminmax = []
 
       self.msg = Message(to=email_gerador)
       self.msg.set_metadata('performative', 'subscribe')
@@ -162,6 +191,7 @@ class Resolvedor(Agent):
       stateMachine.add_transition(source=SOLVE_FIRST_GRADE_STATE, dest=ANSWER_STATE)
       stateMachine.add_transition(source=SOLVE_BY_BISECTION_STATE, dest=ANSWER_STATE)
       stateMachine.add_transition(source=ANSWER_STATE, dest=SOLVE_FIRST_GRADE_STATE)
+      stateMachine.add_transition(source=ANSWER_STATE, dest=SOLVE_BY_BISECTION_STATE)
 
       t = Template()
       t.set_metadata("performative","inform")
